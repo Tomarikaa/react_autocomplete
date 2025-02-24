@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Person } from '../../types/Person';
-import { peopleFromServer } from '../../data/people';
-import { log } from 'console';
+import { peopleUUID } from '../../data/people';
 
 interface AutocompleteProps {
   delay?: number;
@@ -37,10 +36,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 
   useEffect(() => {
     if (debouncedValue.trim() === '') {
-      setSuggestions(peopleFromServer);
+      setSuggestions(peopleUUID);
     } else {
       setSuggestions(
-        peopleFromServer.filter(person =>
+        peopleUUID.filter(person =>
           person.name.toLowerCase().includes(debouncedValue.toLowerCase()),
         ),
       );
@@ -60,7 +59,6 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   const handleSuggestionClick = (person: Person) => {
     setInputValue(person.name);
     setShowDropdown(false);
-    console.log(person.slug);
     if (onSelected) {
       onSelected(person);
       selectedPersonRef.current = person;
@@ -70,7 +68,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   const handleInputFocus = () => {
     setShowDropdown(true);
     if (inputValue === '') {
-      setSuggestions(peopleFromServer);
+      setSuggestions(peopleUUID);
     }
   };
 

@@ -1,7 +1,7 @@
 import { Person } from '../types/Person';
 import { v4 as uuidv4 } from 'uuid';
 
-let people: Person[] = [
+const people: Person[] = [
   {
     name: 'Carolus Haverbeke',
     sex: 'm',
@@ -355,7 +355,7 @@ let people: Person[] = [
   },
 ];
 
-export const peopleFromServer = people.map((person) => ({
+export const peopleUUID = people.map(person => ({
   ...person,
   slug: uuidv4(),
 }));
