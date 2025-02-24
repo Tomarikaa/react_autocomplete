@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Person } from '../../types/Person';
 import { peopleFromServer } from '../../data/people';
+import { log } from 'console';
 
 interface AutocompleteProps {
   delay?: number;
@@ -59,6 +60,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   const handleSuggestionClick = (person: Person) => {
     setInputValue(person.name);
     setShowDropdown(false);
+    console.log(person.slug);
     if (onSelected) {
       onSelected(person);
       selectedPersonRef.current = person;
