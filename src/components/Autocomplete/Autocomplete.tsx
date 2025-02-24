@@ -7,7 +7,10 @@ interface AutocompleteProps {
   onSelected?: (person: Person | null) => void;
 }
 
-export const Autocomplete: React.FC<AutocompleteProps> = ({ delay = 300, onSelected }) => {
+export const Autocomplete: React.FC<AutocompleteProps> = ({
+  delay = 300,
+  onSelected,
+}) => {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<Person[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -19,6 +22,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ delay = 300, onSelec
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
+
     timeoutId.current = setTimeout(() => {
       setDebouncedValue(inputValue);
     }, delay);
@@ -31,13 +35,13 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ delay = 300, onSelec
   }, [inputValue, delay]);
 
   useEffect(() => {
-    if (debouncedValue === '') {
+    if (debouncedValue.trim() === '') {
       setSuggestions(peopleFromServer);
     } else {
       setSuggestions(
-        peopleFromServer.filter((person) =>
-          person.name.toLowerCase().includes(debouncedValue.toLowerCase())
-        )
+        peopleFromServer.filter(person =>
+          person.name.toLowerCase().includes(debouncedValue.toLowerCase()),
+        ),
       );
     }
   }, [debouncedValue]);
@@ -70,8 +74,8 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ delay = 300, onSelec
 
   const handleInputBlur = () => {
     setTimeout(() => {
-        setShowDropdown(false);
-      }, 100);
+      setShowDropdown(false);
+    }, 100);
   };
 
   return (
@@ -92,7 +96,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ delay = 300, onSelec
       <div className="dropdown-menu" role="menu" data-cy="suggestions-list">
         <div className="dropdown-content">
           {suggestions.length > 0 ? (
-            suggestions.map((person) => (
+            suggestions.map(person => (
               <button // change div to button
                 key={person.slug}
                 className="dropdown-item"
@@ -103,10 +107,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({ delay = 300, onSelec
               </button>
             ))
           ) : (
-            <div
-              className="dropdown-item"
-              data-cy="no-suggestions-message"
-            >
+            <div className="dropdown-item" data-cy="no-suggestions-message">
               <p className="has-text-danger">No matching suggestions</p>
             </div>
           )}
